@@ -5,6 +5,7 @@ public class SpawnerPoints : MonoBehaviour
 {
     [SerializeField] private Coin _coin;
     [SerializeField] private Vector2 _position;
+
     private float _spawnRadius = 1.0f;
 
     public void Spawn()
