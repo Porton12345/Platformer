@@ -1,27 +1,27 @@
 using UnityEngine;
 
-public class SpawnerPoints : MonoBehaviour
+public class SpawnerPointsAidKit : MonoBehaviour
 {
-    [SerializeField] private Coin _coin;
+    [SerializeField] private FirstAidKit _firstAidKit;
     [SerializeField] private Vector2 _position;
 
     private float _spawnRadius = 1.0f;
 
     public void Spawn()
     {
-        if (CanSpawnCoin(_position))
+        if (CanSpawnKit(_position))
         {
-            Coin coin = Instantiate(_coin, _position, Quaternion.identity);
-        }                                    
+            FirstAidKit firstAidkit = Instantiate(_firstAidKit, _position, Quaternion.identity);
+        }
     }
 
-    private bool CanSpawnCoin(Vector2 position)
+    private bool CanSpawnKit(Vector2 position)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(position, _spawnRadius);
 
         foreach (Collider2D collider in colliders)
         {
-            if (collider.gameObject.CompareTag(_coin.tag))
+            if (collider.gameObject.CompareTag(_firstAidKit.tag))
             {
                 return false;
             }
