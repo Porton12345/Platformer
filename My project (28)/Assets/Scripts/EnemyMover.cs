@@ -1,34 +1,34 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class EnemyMover : MonoBehaviour
-{
-    public int damage = 10;
-    public float delay = 5f;
-    
+{   
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _speed;
-    [SerializeField] private Animator _animator;    
+    [SerializeField] private Animator _animator;
     [SerializeField] private AnimationClip _clipRunRight;
     [SerializeField] private AnimationClip _clipRunLeft;
-    [SerializeField] private LayerMask _layerMask;    
+    [SerializeField] private LayerMask _layerMask;
 
     private int _firstWaypoint = 0;
     private int _secondWaypoint = 1;
-    private int _currentWaypoint;    
+    private int _currentWaypoint;
     private float _minLenght = 0.2f;
     private float _raycastDistance = 5f;
     private Coroutine _coroutine;
     private int _currentHealth = 100;
     private int _maxHealth = 100;
 
+    public int Damage => 10;
+    public float Delay => 0.1f;
+
     private void Start()
     {
         _currentWaypoint = _firstWaypoint;
-    }
+    }    
 
-    private void Update()
-    {       
+    private void FixedUpdate()
+    {
         RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, _raycastDistance, _layerMask);
         RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, -Vector2.right, _raycastDistance, _layerMask);
 
@@ -40,17 +40,17 @@ public class EnemyMover : MonoBehaviour
         {
             transform.position = Vector2.MoveTowards(transform.position, _waypoints[_secondWaypoint].position, _speed * Time.deltaTime);
             _animator.Play(_clipRunLeft.name);
-           
+
         }
         else if (hitLeft.collider != null)
         {
             transform.position = Vector2.MoveTowards(transform.position, _waypoints[_firstWaypoint].position, _speed * Time.deltaTime);
             _animator.Play(_clipRunRight.name);
-        }   
-        
-        if(_currentHealth <= 0)
-        {            
-            Destroy(gameObject);            
+        }
+
+        if (_currentHealth <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -65,8 +65,8 @@ public class EnemyMover : MonoBehaviour
             }
             else if (_coroutine == null)
             {
-                WaitForSeconds wait = new WaitForSeconds(player.delay);
-                _coroutine = StartCoroutine(TakeDamage(player.damage, wait));
+                WaitForSeconds wait = new WaitForSeconds(player.Delay);
+                _coroutine = StartCoroutine(TakeDamage(player.Damage, wait));
             }
         }
     }
@@ -110,7 +110,7 @@ public class EnemyMover : MonoBehaviour
         while (true)
         {
             _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
-            Debug.Log("HP ñëàéìà " + _currentHealth);
+            Debug.Log("HP ÑÐ»Ð°Ð¹Ð¼Ð° " + _currentHealth);
             yield return wait;
         }
     }

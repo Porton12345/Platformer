@@ -21,7 +21,7 @@ public class SpawnerPointsAidKit : MonoBehaviour
 
         foreach (Collider2D collider in colliders)
         {
-            if (collider.gameObject.CompareTag(_firstAidKit.tag))
+            if (collider.gameObject.GetComponent<FirstAidKit>() != null)             
             {
                 return false;
             }

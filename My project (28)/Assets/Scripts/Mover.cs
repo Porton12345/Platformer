@@ -1,13 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class Mover : MonoBehaviour
 {
     private const string Horizontal = nameof(Horizontal);
-    private const string Vertical = nameof(Vertical);
-
-    public int damage = 10;
-    public float delay = 10f;
+    private const string Vertical = nameof(Vertical);    
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Animator _animator;
@@ -16,28 +13,31 @@ public class Mover : MonoBehaviour
     [SerializeField] private AnimationClip _clipRunLeft;
 
     private Vector2 _distance = Vector3.zero;
-    private float _ñoefOfSpeed = 0.01f;
+    private float _koefOfSpeed = 0.01f;
     private int _currentHealth = 100;
     private int _maxHealth = 100;
-    private Coroutine _moverCoroutine;    
+    private Coroutine _moverCoroutine;
+
+    public int Damage => 10;
+    public float Delay => 0.1f;
 
     private void Update()
     {
-        Move();
-    }        
+        Move();       
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Coin>(out Coin coin))
+        if (collision.gameObject.TryGetComponent(out Coin coin))
         {
             Destroy(collision.gameObject);
         }
 
-        if (collision.gameObject.TryGetComponent<FirstAidKit>(out FirstAidKit firstAidKit))
+        if (collision.gameObject.TryGetComponent(out FirstAidKit firstAidKit))
         {
             Destroy(collision.gameObject);
-            _currentHealth = _maxHealth;
-        }
+            _currentHealth = _maxHealth;            
+        }       
 
         if (collision.gameObject.TryGetComponent(out EnemyMover enemy))
         {
@@ -46,10 +46,11 @@ public class Mover : MonoBehaviour
                 StopCoroutine(_moverCoroutine);
                 _moverCoroutine = null;
             }
-            else if (_moverCoroutine == null)
-            {
-                WaitForSeconds wait = new WaitForSeconds(enemy.delay);
-                _moverCoroutine = StartCoroutine(TakeDamage(enemy.damage, wait));
+            
+            if (_moverCoroutine == null)
+            {                
+                WaitForSeconds wait = new WaitForSeconds(enemy.Delay);
+                _moverCoroutine = StartCoroutine(TakeDamage(enemy.Damage, wait));
             }
         }
     }
@@ -74,7 +75,7 @@ public class Mover : MonoBehaviour
         float horizontalDirection = Input.GetAxisRaw(Horizontal);
         Vector2 horizontalDistance = horizontalDirection * _moveSpeed * Time.deltaTime * Vector3.right;
 
-        _distance = (verticalDistance + horizontalDistance).normalized * _ñoefOfSpeed;
+        _distance = (verticalDistance + horizontalDistance).normalized * _koefOfSpeed;
         transform.Translate(_distance);
 
         if (_distance == Vector2.zero)
@@ -89,16 +90,15 @@ public class Mover : MonoBehaviour
         {
             _animator.Play(_clipRunLeft.name);
         }
-    }   
+    }
 
     private IEnumerator TakeDamage(int damage, WaitForSeconds wait)
     {
         while (true)
         {
             _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
-            Debug.Log("HP èãðîêà " + _currentHealth);
+            Debug.Log("HP Ð¸Ð³Ñ€Ð¾ÐºÐ° " + _currentHealth);
             yield return wait;
-        }        
+        }
     }
 }
-

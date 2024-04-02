@@ -20,8 +20,8 @@ public class SpawnerPoints : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(position, _spawnRadius);
 
         foreach (Collider2D collider in colliders)
-        {
-            if (collider.gameObject.CompareTag(_coin.tag))
+        {            
+            if (collider.gameObject.GetComponent<Coin>() != null)
             {
                 return false;
             }
