@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using TMPro;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,11 +20,6 @@ public class PlayerController : MonoBehaviour
 
     public int Damage => 10;
     public float Delay => 0.1f;
-         
-    private void Update()
-    {
-        Move();        
-    }   
 
     public float GetHealth()
     {
@@ -37,6 +30,18 @@ public class PlayerController : MonoBehaviour
     {
         _currentHealth = _maxHealth;
     }
+
+    public IEnumerator TakeButtonDamage(int damage, WaitForSeconds wait)
+    {
+        _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
+        Debug.Log("HP игрока " + _currentHealth);
+        yield return wait;
+    }
+
+    private void Update()
+    {
+        Move();        
+    }       
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -112,12 +117,5 @@ public class PlayerController : MonoBehaviour
             Debug.Log("HP игрока " + _currentHealth);            
             yield return wait;
         }
-    }
-
-    public IEnumerator TakeButtonDamage(int damage, WaitForSeconds wait)
-    {
-        _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
-        Debug.Log("HP игрока " + _currentHealth);
-        yield return wait;
-    }
+    }    
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +17,17 @@ public class HealthBarsController : MonoBehaviour
     private int _buttonDamage = 10;
     private float _currentSmoothHealth;
 
+    public void OnClickDamageButton()
+    {
+        WaitForSeconds wait = new WaitForSeconds(_delay);
+        _damageCoroutine = StartCoroutine(playerController.TakeButtonDamage(_buttonDamage, wait));
+    }
+
+    public void OnClickHealButton()
+    {
+        playerController.Heal();
+    }
+
     private void Start()
     {
         _hpText.text = "100/100";       
@@ -31,16 +40,5 @@ public class HealthBarsController : MonoBehaviour
         _hpSlider.value = _currentHealth;
         _currentSmoothHealth = Mathf.MoveTowards(_currentSmoothHealth, _currentHealth, _maxDelta * Time.deltaTime);
         _hpSmoothSlider.value = _currentSmoothHealth;
-    }
-
-    public void OnClickDamageButton()
-    {
-        WaitForSeconds wait = new WaitForSeconds(_delay);
-        _damageCoroutine = StartCoroutine(playerController.TakeButtonDamage(_buttonDamage, wait));
-    }
-
-    public void OnClickHealButton()
-    {
-        playerController.Heal();
-    }   
+    }    
 }
