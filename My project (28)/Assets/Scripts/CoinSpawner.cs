@@ -23,8 +23,8 @@ public class CoinSpawner : MonoBehaviour
 
     private void ActivatePoint()
     {
-        int _currentSpawnPoint = Random.Range(0, _spawningPoint.Length);
-        SpawnerPoints SpawnerPoint = _spawningPoint[_currentSpawnPoint];
+        int currentSpawnPoint = Random.Range(0, _spawningPoint.Length);
+        SpawnerPoints SpawnerPoint = _spawningPoint[currentSpawnPoint];
         SpawnerPoint.Spawn();
     }
 }

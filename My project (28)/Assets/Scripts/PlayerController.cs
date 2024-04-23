@@ -12,48 +12,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private AnimationClip _clipIdle;
     [SerializeField] private AnimationClip _clipRunRight;
-    [SerializeField] private AnimationClip _clipRunLeft;
-    [SerializeField] private TextMeshProUGUI _hpText;
-    [SerializeField] private Slider _hpSlider;
-    [SerializeField] private Slider _hpSmoothSlider;
+    [SerializeField] private AnimationClip _clipRunLeft;    
 
-    private Vector2 _distance = Vector3.zero;
-    private float _koefOfSpeed = 0.01f;
     private float _currentHealth = 100f;
+    private Vector2 _distance = Vector3.zero;
+    private float _koefOfSpeed = 0.01f;    
     private float _maxHealth = 100f;
-    private Coroutine _damageCoroutine;
-    private float _maxDelta = 100f;
-    private int _delay = 1;
-    private int _buttonDamage = 10;
-    private float _currentSmoothHealth;
+    private Coroutine _damageCoroutine;    
 
     public int Damage => 10;
     public float Delay => 0.1f;
-
-    public void OnClickDamageButton()
-    {               
-        WaitForSeconds wait = new WaitForSeconds(_delay);
-        _damageCoroutine = StartCoroutine(TakeButtonDamage(_buttonDamage, wait));        
-    }
-
-    public void OnClickHealButton()
-    {
-        _currentHealth = _maxHealth;       
-    }  
-
-    private void Start()
-    {
-        _hpText.text = "100/100";
-        _currentSmoothHealth = _maxHealth;
-    }
-
+         
     private void Update()
     {
-        Move();
-        _hpText.text = _currentHealth.ToString("") + "/100";
-        _hpSlider.value = _currentHealth;           
-        _currentSmoothHealth = Mathf.MoveTowards(_currentSmoothHealth, _currentHealth, _maxDelta * Time.deltaTime);
-        _hpSmoothSlider.value = _currentSmoothHealth;
+        Move();        
+    }   
+
+    public float GetHealth()
+    {
+        return _currentHealth;
+    }
+
+    public void Heal()
+    {
+        _currentHealth = _maxHealth;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -132,10 +114,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private IEnumerator TakeButtonDamage(int damage, WaitForSeconds wait)
-    {        
-            _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
-            Debug.Log("HP игрока " + _currentHealth);
-            yield return wait;        
+    public IEnumerator TakeButtonDamage(int damage, WaitForSeconds wait)
+    {
+        _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
+        Debug.Log("HP игрока " + _currentHealth);
+        yield return wait;
     }
 }
