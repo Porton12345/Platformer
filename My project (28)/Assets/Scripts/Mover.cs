@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
+public class Mover : MonoBehaviour
 {
+    public Health health;
+
     private const string Horizontal = nameof(Horizontal);
     private const string Vertical = nameof(Vertical);    
 
@@ -11,32 +13,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AnimationClip _clipIdle;
     [SerializeField] private AnimationClip _clipRunRight;
     [SerializeField] private AnimationClip _clipRunLeft;    
-
-    private float _currentHealth = 100f;
+        
     private Vector2 _distance = Vector3.zero;
-    private float _koefOfSpeed = 0.01f;    
-    private float _maxHealth = 100f;
+    private float _koefOfSpeed = 0.01f;        
     private Coroutine _damageCoroutine;    
 
     public int Damage => 10;
-    public float Delay => 0.1f;
-
-    public float GetHealth()
-    {
-        return _currentHealth;
-    }
-
-    public void Heal()
-    {
-        _currentHealth = _maxHealth;
-    }
-
-    public IEnumerator TakeButtonDamage(int damage, WaitForSeconds wait)
-    {
-        _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
-        Debug.Log("HP игрока " + _currentHealth);
-        yield return wait;
-    }
+    public float Delay => 0.1f;      
 
     private void Update()
     {
@@ -53,7 +36,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out FirstAidKit firstAidKit))
         {
             Destroy(collision.gameObject);
-            _currentHealth = _maxHealth;            
+            health.Heal();                       
         }       
 
         if (collision.gameObject.TryGetComponent(out EnemyMover enemy))
@@ -67,7 +50,7 @@ public class PlayerController : MonoBehaviour
             if (_damageCoroutine == null)
             {                
                 WaitForSeconds wait = new WaitForSeconds(enemy.Delay);
-                _damageCoroutine = StartCoroutine(TakeDamage(enemy.Damage, wait));
+                _damageCoroutine = StartCoroutine(health.TakeDamage(enemy.Damage, wait));
             }
         }
     }      
@@ -106,16 +89,6 @@ public class PlayerController : MonoBehaviour
         else if (horizontalDirection < 0)
         {
             _animator.Play(_clipRunLeft.name);
-        }
-    }
-
-    private IEnumerator TakeDamage(int damage, WaitForSeconds wait)
-    {       
-        while (true)
-        {            
-            _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
-            Debug.Log("HP игрока " + _currentHealth);            
-            yield return wait;
         }
     }    
 }

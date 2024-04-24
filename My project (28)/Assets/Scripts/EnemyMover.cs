@@ -56,7 +56,7 @@ public class EnemyMover : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out PlayerController player))
+        if (collision.gameObject.TryGetComponent(out Mover player))
         {
             if (_coroutine != null)
             {
@@ -73,7 +73,7 @@ public class EnemyMover : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out PlayerController player))
+        if (collision.gameObject.TryGetComponent(out Mover player))
         {
             if (_coroutine != null)
             {
