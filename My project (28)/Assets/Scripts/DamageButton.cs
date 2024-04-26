@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageButton : MonoBehaviour
@@ -13,6 +12,13 @@ public class DamageButton : MonoBehaviour
     public void OnClickDamageButton()
     {
         WaitForSeconds wait = new WaitForSeconds(_delay);
-        _damageCoroutine = StartCoroutine(health.TakeButtonDamage(_buttonDamage, wait));
+        _damageCoroutine = StartCoroutine(TakeButtonDamage(_buttonDamage, wait));
+    }
+
+    public IEnumerator TakeButtonDamage(int damage, WaitForSeconds wait)
+    {
+        health.GetDamage(damage); 
+        Debug.Log("HP èãðîêà " + health.ÑurrentHealth);
+        yield return wait;
     }
 }

@@ -1,41 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    public float currentHealth { get; private set; }
-    public float maxHealth => 100f;
-
-    private void Start()
-    {
-        currentHealth = maxHealth;
-    }
-
+    public event UnityAction OnHealthChange; 
+    
+    public float ÑurrentHealth { get;  set; } = 100f;
+    public float MaxHealth => 100f;
+        
     public float GetHealth()
-    {
-        return currentHealth;
+    {       
+        return ÑurrentHealth;
     }
 
     public void Heal()
     {
-        currentHealth = maxHealth;
-    }
+        ÑurrentHealth = MaxHealth;
+        OnHealthChange?.Invoke();
+    }    
 
-    public IEnumerator TakeButtonDamage(int damage, WaitForSeconds wait)
+    public void GetDamage(int damage)
     {
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
-        Debug.Log("HP èãðîêà " + currentHealth);
-        yield return wait;
-    }
-
-    public IEnumerator TakeDamage(int damage, WaitForSeconds wait)
-    {
-        while (true)
-        {
-            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
-            Debug.Log("HP èãðîêà " + currentHealth);
-            yield return wait;
-        }
+        ÑurrentHealth = Mathf.Clamp(ÑurrentHealth - damage, 0, MaxHealth);
+        OnHealthChange?.Invoke();
     }
 }

@@ -50,7 +50,7 @@ public class Mover : MonoBehaviour
             if (_damageCoroutine == null)
             {                
                 WaitForSeconds wait = new WaitForSeconds(enemy.Delay);
-                _damageCoroutine = StartCoroutine(health.TakeDamage(enemy.Damage, wait));
+                _damageCoroutine = StartCoroutine(TakeDamage(enemy.Damage, wait));
             }
         }
     }      
@@ -90,5 +90,14 @@ public class Mover : MonoBehaviour
         {
             _animator.Play(_clipRunLeft.name);
         }
-    }    
+    }
+    public IEnumerator TakeDamage(int damage, WaitForSeconds wait)
+    {
+        while (true)
+        {
+            health.GetDamage(damage);            
+            Debug.Log("HP игрока " + health.СurrentHealth);
+            yield return wait;
+        }
+    }
 }

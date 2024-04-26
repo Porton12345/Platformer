@@ -1,14 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class HealthDisplay : MonoBehaviour
 {
     public Health health;
 
-    private float _currentHealth;
+    protected float _currentHealth;
 
-    private void Update()
+    private void Start()
+    {
+        _currentHealth = health.ÑurrentHealth;
+    }
+
+    private void OnEnable()
+    {
+        health.OnHealthChange += DisplayChange;
+    }
+
+    private void OnDisable()
+    {
+        health.OnHealthChange -= DisplayChange;
+    }        
+
+    private void DisplayChange()
     {
         _currentHealth = health.GetHealth();
         ShowHealth(_currentHealth);
