@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class HealthDisplay : MonoBehaviour
 {
-    public Health health;
+    [SerializeField] private Health health;
 
     protected float _currentHealth;
 

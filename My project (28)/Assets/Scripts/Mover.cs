@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Mover : MonoBehaviour
 {
-    public Health health;
+    [SerializeField] private Health health;
 
     private const string Horizontal = nameof(Horizontal);
     private const string Vertical = nameof(Vertical);    
