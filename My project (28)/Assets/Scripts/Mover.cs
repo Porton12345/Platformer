@@ -2,12 +2,11 @@
 using System.Collections;
 
 public class Mover : MonoBehaviour
-{
-    [SerializeField] private Health health;
-
+{   
     private const string Horizontal = nameof(Horizontal);
-    private const string Vertical = nameof(Vertical);    
+    private const string Vertical = nameof(Vertical);
 
+    [SerializeField] private Health _health;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Animator _animator;
     [SerializeField] private AnimationClip _clipIdle;
@@ -36,7 +35,7 @@ public class Mover : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out FirstAidKit firstAidKit))
         {
             Destroy(collision.gameObject);
-            health.Heal();                       
+            _health.Heal();                       
         }       
 
         if (collision.gameObject.TryGetComponent(out EnemyMover enemy))
@@ -48,7 +47,7 @@ public class Mover : MonoBehaviour
             }
             
             if (_damageCoroutine == null)
-            {                
+            {
                 WaitForSeconds wait = new WaitForSeconds(enemy.Delay);
                 _damageCoroutine = StartCoroutine(TakeDamage(enemy.Damage, wait));
             }
@@ -92,11 +91,11 @@ public class Mover : MonoBehaviour
         }
     }
     public IEnumerator TakeDamage(int damage, WaitForSeconds wait)
-    {
+    {        
         while (true)
         {
-            health.GetDamage(damage);            
-            Debug.Log("HP игрока " + health.СurrentHealth);
+            _health.GetDamage(damage);            
+            Debug.Log("HP игрока " + _health.СurrentHealth);
             yield return wait;
         }
     }

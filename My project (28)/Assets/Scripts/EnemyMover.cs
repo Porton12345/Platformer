@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class EnemyMover : MonoBehaviour
-{   
+{
+    [SerializeField] private EnemyHealth _enemyHealth;
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _speed;
     [SerializeField] private Animator _animator;
@@ -15,9 +16,7 @@ public class EnemyMover : MonoBehaviour
     private int _currentWaypoint;
     private float _minLenght = 0.2f;
     private float _raycastDistance = 5f;
-    private Coroutine _coroutine;
-    private int _currentHealth = 100;
-    private int _maxHealth = 100;
+    private Coroutine _coroutine;  
 
     public int Damage => 10;
     public float Delay => 0.1f;
@@ -48,10 +47,10 @@ public class EnemyMover : MonoBehaviour
             _animator.Play(_clipRunRight.name);
         }
 
-        if (_currentHealth <= 0)
+        if (_enemyHealth.GetEnemyHealth() <= 0)
         {
             Destroy(gameObject);
-        }
+        }         
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -109,9 +108,9 @@ public class EnemyMover : MonoBehaviour
     {
         while (true)
         {
-            _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
-            Debug.Log("HP слайма " + _currentHealth);
+            _enemyHealth.GetDamage(damage);
+            Debug.Log("HP врага " + _enemyHealth.СurrentEnemyHealth);
             yield return wait;
-        }
+        }        
     }
 }
