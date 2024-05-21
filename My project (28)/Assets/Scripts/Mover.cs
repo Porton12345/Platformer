@@ -4,7 +4,7 @@ using System.Collections;
 public class Mover : MonoBehaviour
 {   
     private const string Horizontal = nameof(Horizontal);
-    private const string Vertical = nameof(Vertical);
+    private const string Vertical = nameof(Vertical);    
 
     [SerializeField] private Health _health;
     [SerializeField] private float _moveSpeed;
@@ -12,7 +12,7 @@ public class Mover : MonoBehaviour
     [SerializeField] private AnimationClip _clipIdle;
     [SerializeField] private AnimationClip _clipRunRight;
     [SerializeField] private AnimationClip _clipRunLeft;    
-        
+
     private Vector2 _distance = Vector3.zero;
     private float _koefOfSpeed = 0.01f;        
     private Coroutine _damageCoroutine;    
@@ -23,18 +23,12 @@ public class Mover : MonoBehaviour
     private void Update()
     {
         Move();        
-    }       
+    }    
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.TryGetComponent(out Coin coin))
-        {
-            Destroy(collision.gameObject);
-        }
-
+    {        
         if (collision.gameObject.TryGetComponent(out FirstAidKit firstAidKit))
-        {
-            Destroy(collision.gameObject);
+        {            
             _health.Heal();                       
         }       
 
@@ -52,7 +46,7 @@ public class Mover : MonoBehaviour
                 _damageCoroutine = StartCoroutine(TakeDamage(enemy.Damage, wait));
             }
         }
-    }      
+    }       
 
     private void OnTriggerExit2D(Collider2D collisiion)
     {
@@ -94,8 +88,8 @@ public class Mover : MonoBehaviour
     {        
         while (true)
         {
-            _health.GetDamage(damage);            
-            Debug.Log("HP игрока " + _health.СurrentHealth);
+            _health.TakeDamage(damage);            
+            Debug.Log("HP игрока " + _health.CurrentHealth);
             yield return wait;
         }
     }

@@ -8,7 +8,7 @@ public abstract class HealthDisplay : MonoBehaviour
 
     private void Start()
     {
-        _currentHealth = health.ÑurrentHealth;
+        _currentHealth = health.CurrentHealth;
     }
 
     private void OnEnable()
@@ -23,7 +23,7 @@ public abstract class HealthDisplay : MonoBehaviour
 
     private void DisplayChange()
     {
-        _currentHealth = health.GetHealth();
+        _currentHealth = health.CurrentHealth;
         ShowHealth(_currentHealth);
     }
 

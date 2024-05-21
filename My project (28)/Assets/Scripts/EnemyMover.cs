@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] private EnemyHealth _enemyHealth;
+    [SerializeField] private Health _enemyHealth;
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _speed;
     [SerializeField] private Animator _animator;
@@ -47,7 +47,7 @@ public class EnemyMover : MonoBehaviour
             _animator.Play(_clipRunRight.name);
         }
 
-        if (_enemyHealth.GetEnemyHealth() <= 0)
+        if (_enemyHealth.CurrentHealth <= 0)
         {
             Destroy(gameObject);
         }         
@@ -108,8 +108,8 @@ public class EnemyMover : MonoBehaviour
     {
         while (true)
         {
-            _enemyHealth.GetDamage(damage);
-            Debug.Log("HP врага " + _enemyHealth.СurrentEnemyHealth);
+            _enemyHealth.TakeDamage(damage);
+            Debug.Log("HP врага " + _enemyHealth.CurrentHealth);
             yield return wait;
         }        
     }
