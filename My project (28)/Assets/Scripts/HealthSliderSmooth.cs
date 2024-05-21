@@ -5,7 +5,7 @@ using System.Collections;
 public class HealthSliderSmooth : MonoBehaviour
 {
     [SerializeField] private Slider _hpSmoothSlider;
-    [SerializeField] private Health health;
+    [SerializeField] private Health _health;
 
     private float _currentSmoothHealth;
     private float _maxDelta = 100f;
@@ -15,23 +15,23 @@ public class HealthSliderSmooth : MonoBehaviour
 
     private void Start()
     {
-        _currentHealth = health.ÑurrentHealth;
-        _currentSmoothHealth = health.ÑurrentHealth;
+        _currentHealth = _health.CurrentHealth;
+        _currentSmoothHealth = _health.CurrentHealth;
     }
 
     private void OnEnable()
     {
-        health.OnHealthChange += DisplayChange;
+        _health.OnHealthChange += DisplayChange;
     }
 
     private void OnDisable()
     {
-        health.OnHealthChange -= DisplayChange;
+        _health.OnHealthChange -= DisplayChange;
     }
 
     private void DisplayChange()
     {
-        _currentHealth = health.GetHealth();
+        _currentHealth = _health.CurrentHealth;
         ShowHealth(_currentHealth);
     }
 
