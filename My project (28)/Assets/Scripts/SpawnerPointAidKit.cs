@@ -8,6 +8,7 @@ public class SpawnerPointAidKit : MonoBehaviour
     [SerializeField] private int _kitPoolCapacity = 1;
     [SerializeField] private int _kitMaxSizePool = 1;
     [SerializeField] private Vector2 _position;
+    [SerializeField] private Mover _player;
 
     private ObjectPool<FirstAidKit> _kitPool;
     private float _delay = 2f;
@@ -26,13 +27,13 @@ public class SpawnerPointAidKit : MonoBehaviour
     {
         _kitPool.Release(kit);
         WaitForSeconds wait = new WaitForSeconds(_delay);
-        Coroutine couroutine = StartCoroutine(EnableKit(wait, kit));
+        StartCoroutine(EnableKit(wait, kit));
     }
 
     private FirstAidKit CreatePooledKit()
     {
         FirstAidKit kit = Instantiate(_kit, _position, Quaternion.identity);
-        kit.Disable += ReturnKitToPool;
+        _player.DisableKit += ReturnKitToPool;
 
         kit.gameObject.SetActive(false);
 
@@ -50,14 +51,12 @@ public class SpawnerPointAidKit : MonoBehaviour
     }
 
     private void OnDestroyObject(FirstAidKit kit)
-    {
-        Destroy(kit.gameObject);
+    {        
     }
 
     private IEnumerator EnableKit(WaitForSeconds wait, FirstAidKit kit)
     {
-        yield return wait;
-        Debug.Log("Аптечка вкл");
+        yield return wait;        
         kit.gameObject.SetActive(true);
     }
 }

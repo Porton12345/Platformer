@@ -42,8 +42,7 @@ public class HealthSliderSmooth : MonoBehaviour
             StopCoroutine(_smoothCoroutine);
             _smoothCoroutine = null;            
         }
-
-        if (_smoothCoroutine == null)
+        else
         {            
             WaitForSeconds wait = new WaitForSeconds(_delay);
             _smoothCoroutine = StartCoroutine(SmoothHealthShowing(currentHealth, wait));
@@ -54,8 +53,7 @@ public class HealthSliderSmooth : MonoBehaviour
     {              
         while (true)
         {
-            _currentSmoothHealth = Mathf.MoveTowards(_currentSmoothHealth, currentHealth, _maxDelta * Time.deltaTime);
-            Debug.Log("Smooth HP " + _currentSmoothHealth);
+            _currentSmoothHealth = Mathf.MoveTowards(_currentSmoothHealth, currentHealth, _maxDelta * Time.deltaTime);            
             _hpSmoothSlider.value = _currentSmoothHealth;            
             yield return wait;
         }

@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Mover : MonoBehaviour
 {   
     private const string Horizontal = nameof(Horizontal);
-    private const string Vertical = nameof(Vertical);    
+    private const string Vertical = nameof(Vertical);
+
+    public event Action<Coin> DisableCoin;
+    public event Action<FirstAidKit> DisableKit;
 
     [SerializeField] private Health _health;
     [SerializeField] private float _moveSpeed;
@@ -26,13 +30,19 @@ public class Mover : MonoBehaviour
     }    
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {        
+    {
+        if (collision.gameObject.TryGetComponent(out Coin coin))
+        {
+            DisableCoin?.Invoke(coin);
+        }
+
         if (collision.gameObject.TryGetComponent(out FirstAidKit firstAidKit))
-        {            
+        {
+            DisableKit?.Invoke(firstAidKit);
             _health.Heal();                       
         }       
 
-        if (collision.gameObject.TryGetComponent(out EnemyMover enemy))
+        if (collision.gameObject.TryGetComponent(out EnemyPatroller enemy))
         {
             if (_damageCoroutine != null)
             {
@@ -50,7 +60,7 @@ public class Mover : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collisiion)
     {
-        if (collisiion.gameObject.TryGetComponent(out EnemyMover enemy))
+        if (collisiion.gameObject.TryGetComponent(out EnemyPatroller enemy))
         {
             if (_damageCoroutine != null)
             {
@@ -88,8 +98,7 @@ public class Mover : MonoBehaviour
     {        
         while (true)
         {
-            _health.TakeDamage(damage);            
-            Debug.Log("HP игрока " + _health.CurrentHealth);
+            _health.TakeDamage(damage);                  
             yield return wait;
         }
     }

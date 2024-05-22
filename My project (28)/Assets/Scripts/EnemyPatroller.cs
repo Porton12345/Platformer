@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyMover : MonoBehaviour
+public class EnemyPatroller : MonoBehaviour
 {
     [SerializeField] private Health _enemyHealth;
     [SerializeField] private Transform[] _waypoints;
@@ -9,7 +9,7 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private AnimationClip _clipRunRight;
     [SerializeField] private AnimationClip _clipRunLeft;
-    [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private LayerMask _playerLayer;
 
     private int _firstWaypoint = 0;
     private int _secondWaypoint = 1;
@@ -28,24 +28,13 @@ public class EnemyMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, _raycastDistance, _layerMask);
-        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, -Vector2.right, _raycastDistance, _layerMask);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, _raycastDistance, _playerLayer);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, -Vector2.right, _raycastDistance, _playerLayer);
 
         if (hitRight.collider == null & hitLeft.collider == null)
         {
             Patrol();
-        }
-        else if (hitRight.collider != null)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, _waypoints[_secondWaypoint].position, _speed * Time.deltaTime);
-            _animator.Play(_clipRunLeft.name);
-
-        }
-        else if (hitLeft.collider != null)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, _waypoints[_firstWaypoint].position, _speed * Time.deltaTime);
-            _animator.Play(_clipRunRight.name);
-        }
+        }        
 
         if (_enemyHealth.CurrentHealth <= 0)
         {
@@ -102,14 +91,13 @@ public class EnemyMover : MonoBehaviour
             _animator.Play(_clipRunRight.name);
         if (_currentWaypoint == _secondWaypoint)
             _animator.Play(_clipRunLeft.name);
-    }
+    }  
 
     private IEnumerator TakeDamage(int damage, WaitForSeconds wait)
     {
         while (true)
         {
-            _enemyHealth.TakeDamage(damage);
-            Debug.Log("HP врага " + _enemyHealth.CurrentHealth);
+            _enemyHealth.TakeDamage(damage);            
             yield return wait;
         }        
     }

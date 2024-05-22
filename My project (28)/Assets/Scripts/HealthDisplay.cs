@@ -4,11 +4,11 @@ public abstract class HealthDisplay : MonoBehaviour
 {
     [SerializeField] private Health health;
 
-    protected float _currentHealth;
+    protected float CurrentHealth;
 
     private void Start()
     {
-        _currentHealth = health.CurrentHealth;
+        CurrentHealth = health.CurrentHealth;
     }
 
     private void OnEnable()
@@ -23,8 +23,8 @@ public abstract class HealthDisplay : MonoBehaviour
 
     private void DisplayChange()
     {
-        _currentHealth = health.CurrentHealth;
-        ShowHealth(_currentHealth);
+        CurrentHealth = health.CurrentHealth;
+        ShowHealth(CurrentHealth);
     }
 
     protected abstract void ShowHealth(float currentHealth);
