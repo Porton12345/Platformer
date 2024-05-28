@@ -6,10 +6,9 @@ public class HealthSliderSmooth : MonoBehaviour
 {
     [SerializeField] private Slider _hpSmoothSlider;
     [SerializeField] private Health _health;
+    [SerializeField] private float _smoothDecreaseDuration = 0.5f;
 
-    private float _currentSmoothHealth;
-    private float _maxDelta = 100f;
-    private Coroutine _smoothCoroutine;
+    private float _currentSmoothHealth;        
     private float _delay = 0.001f;        
     private float _currentHealth;
 
@@ -36,24 +35,22 @@ public class HealthSliderSmooth : MonoBehaviour
     }
 
     private void ShowHealth(float currentHealth)
-    {         
-        if (_smoothCoroutine != null)
-        {
-            StopCoroutine(_smoothCoroutine);
-            _smoothCoroutine = null;            
-        }
-        else
-        {            
-            WaitForSeconds wait = new WaitForSeconds(_delay);
-            _smoothCoroutine = StartCoroutine(SmoothHealthShowing(currentHealth, wait));
-        }        
+    {
+        Coroutine smoothCoroutine;
+        WaitForSeconds wait = new WaitForSeconds(_delay);
+        smoothCoroutine = StartCoroutine(SmoothHealthShowing(currentHealth, wait));          
     }
 
     public IEnumerator SmoothHealthShowing(float currentHealth, WaitForSeconds wait)
-    {              
-        while (true)
-        {
-            _currentSmoothHealth = Mathf.MoveTowards(_currentSmoothHealth, currentHealth, _maxDelta * Time.deltaTime);            
+    {
+        float elapsedTime = 0f;
+        float previousValue = _currentSmoothHealth;
+
+        while (elapsedTime < _smoothDecreaseDuration)
+        {            
+            elapsedTime += Time.deltaTime;
+            float normalizedPosition = elapsedTime / _smoothDecreaseDuration;
+            _currentSmoothHealth = Mathf.Lerp(previousValue, currentHealth, normalizedPosition);
             _hpSmoothSlider.value = _currentSmoothHealth;            
             yield return wait;
         }

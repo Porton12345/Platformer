@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class EnemyPersuer : MonoBehaviour
 {
-    [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _speed;
     [SerializeField] private AnimationClip _clipRunRight;
     [SerializeField] private AnimationClip _clipRunLeft;
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private Animator _animator;
-
-    private int _firstWaypoint = 0;
-    private int _secondWaypoint = 1;
+    [SerializeField] private Mover _playerPosition;
+        
     private float _raycastDistance = 5f;
 
     private void FixedUpdate()
@@ -22,17 +20,17 @@ public class EnemyPersuer : MonoBehaviour
                 
         if (hitRight.collider != null)
         {
-            Pursuit(_secondWaypoint, _clipRunLeft);
+            Pursuit(_clipRunLeft);
         }
         else if (hitLeft.collider != null)
         {
-            Pursuit(_firstWaypoint, _clipRunRight);
+            Pursuit(_clipRunRight);
         }        
     }
 
-    private void Pursuit(int waypoint, AnimationClip clip)
-    {
-        transform.position = Vector2.MoveTowards(transform.position, _waypoints[waypoint].position, _speed * Time.deltaTime);
+    private void Pursuit(AnimationClip clip)    
+    {        
+        transform.position = Vector2.MoveTowards(transform.position, _playerPosition.transform.position, _speed * Time.deltaTime);
         _animator.Play(clip.name);
     }
 }
