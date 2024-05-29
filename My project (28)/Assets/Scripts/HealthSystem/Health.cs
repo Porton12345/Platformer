@@ -3,18 +3,18 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {  
-    [SerializeField] private float MaxHealth = 100f;
+    [SerializeField] private float _maxHealth = 100f;
 
-    public event UnityAction OnHealthChange;
+    public event UnityAction HealthChanged;
 
     public float CurrentHealth { get;  private set; } = 100f;        
 
     public void Heal()
     {
-        if (MaxHealth > 0)
+        if (_maxHealth > 0)
         {
-            CurrentHealth = MaxHealth;
-            OnHealthChange?.Invoke();
+            CurrentHealth = _maxHealth;
+            HealthChanged?.Invoke();
         }        
     }    
 
@@ -22,8 +22,8 @@ public class Health : MonoBehaviour
     {
         if (damage > 0)
         {
-            CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
-            OnHealthChange?.Invoke();
+            CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, _maxHealth);
+            HealthChanged?.Invoke();
         }             
     }
 }

@@ -38,6 +38,7 @@ public class Interactor : MonoBehaviour
             if (_damageCoroutine == null)
             {
                 WaitForSeconds wait = new WaitForSeconds(enemy.Delay);
+                StopAllCoroutines();
                 _damageCoroutine = StartCoroutine(TakeDamage(enemy.Damage, wait));
             }
         }

@@ -21,8 +21,7 @@ public class EnemyPatroller : MonoBehaviour
     public float Delay => 0.1f;
 
     private void Start()
-    {
-       
+    {       
         _places = new Transform[_placesPoints.childCount];
 
         for (int i = 0; i < _places.Length; i++)

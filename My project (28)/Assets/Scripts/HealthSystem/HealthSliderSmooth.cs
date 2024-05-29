@@ -20,12 +20,12 @@ public class HealthSliderSmooth : MonoBehaviour
 
     private void OnEnable()
     {
-        _health.OnHealthChange += DisplayChange;
+        _health.HealthChanged += DisplayChange;
     }
 
     private void OnDisable()
     {
-        _health.OnHealthChange -= DisplayChange;
+        _health.HealthChanged -= DisplayChange;
     }
 
     private void DisplayChange()
@@ -35,10 +35,10 @@ public class HealthSliderSmooth : MonoBehaviour
     }
 
     private void ShowHealth(float currentHealth)
-    {
-        Coroutine smoothCoroutine;
+    {        
         WaitForSeconds wait = new WaitForSeconds(_delay);
-        smoothCoroutine = StartCoroutine(SmoothHealthShowing(currentHealth, wait));          
+        StopAllCoroutines();
+        StartCoroutine(SmoothHealthShowing(currentHealth, wait));          
     }
 
     public IEnumerator SmoothHealthShowing(float currentHealth, WaitForSeconds wait)
