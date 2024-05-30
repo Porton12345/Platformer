@@ -8,7 +8,7 @@ public class SpawnerPointAidKit : SpawnerPoint
     protected override void Start()
     {
         FirstAidKit kit = Instantiate(_object, _position, Quaternion.identity);
-        _player.DisableKit += DisableObject;
+        _player.KitDisabled += DisableObject;
         _object.gameObject.SetActive(true);
     }
 

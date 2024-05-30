@@ -11,17 +11,21 @@ public class EnemyPatroller : MonoBehaviour
     [SerializeField] private AnimationClip _clipRunRight;
     [SerializeField] private AnimationClip _clipRunLeft;
     [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private Vampirism _player;
 
     private float _minLenght = 0.2f;
     private float _raycastDistance = 5f;
     private Coroutine _coroutine;
+    private Coroutine _vampireCoroutine;
     private int _nextPointIndex = 0;
 
     public int Damage => 10;
     public float Delay => 0.1f;
 
     private void Start()
-    {       
+    {                
+        _player.HealthSucked += TakeVampireDamage;
+
         _places = new Transform[_placesPoints.childCount];
 
         for (int i = 0; i < _places.Length; i++)
@@ -41,6 +45,7 @@ public class EnemyPatroller : MonoBehaviour
         if (_health.CurrentHealth <= 0)
         {
             Destroy(gameObject);
+            _player.HealthSucked -= TakeVampireDamage;
         }         
     }
 
@@ -50,13 +55,13 @@ public class EnemyPatroller : MonoBehaviour
         {
             if (_coroutine != null)
             {
-                StopCoroutine(_coroutine);
+                StopAllCoroutines();
                 _coroutine = null;
             }
             else
             {
                 WaitForSeconds wait = new WaitForSeconds(player.Delay);
-                _coroutine = StartCoroutine(TakeDamage(player.Damage, wait));
+                _coroutine = StartCoroutine(TakeDamage(player.Damage, wait, this));
             }
         }
     }
@@ -93,11 +98,25 @@ public class EnemyPatroller : MonoBehaviour
         }        
     }    
 
-    private IEnumerator TakeDamage(int damage, WaitForSeconds wait)
+    private void TakeVampireDamage(EnemyPatroller enemy)
+    {        
+        if (_vampireCoroutine != null)
+        {
+            StopAllCoroutines();
+            _vampireCoroutine = null;
+        }
+        else
+        {
+            WaitForSeconds wait = new WaitForSeconds(_player.VampireDelay);
+            _vampireCoroutine = StartCoroutine(TakeDamage(_player.VampireDamage, wait, enemy));
+        }        
+    }
+
+    private IEnumerator TakeDamage(int damage, WaitForSeconds wait, EnemyPatroller enemy)
     {
         while (true)
         {
-            _health.TakeDamage(damage);            
+            enemy._health.TakeDamage(damage);            
             yield return wait;
         }        
     }

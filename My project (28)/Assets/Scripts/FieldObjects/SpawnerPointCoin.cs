@@ -8,7 +8,7 @@ public class SpawnerPointCoin : SpawnerPoint
     protected override void Start()
     {
         Coin kit = Instantiate(_object, _position, Quaternion.identity);
-        _player.DisableCoin += DisableObject;
+        _player.CoinDisabled += DisableObject;
         _object.gameObject.SetActive(true);
     }
 

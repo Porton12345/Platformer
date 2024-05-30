@@ -8,8 +8,8 @@ public class Interactor : MonoBehaviour
    
     private Coroutine _damageCoroutine;
 
-    public event Action<Coin> DisableCoin;
-    public event Action<FirstAidKit> DisableKit;
+    public event Action<Coin> CoinDisabled;
+    public event Action<FirstAidKit> KitDisabled;
 
     public int Damage => 10;
     public float Delay => 0.1f;
@@ -18,13 +18,13 @@ public class Interactor : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out Coin coin))
         {
-            DisableCoin?.Invoke(coin);
+            CoinDisabled?.Invoke(coin);
         }
 
         if (collision.gameObject.TryGetComponent(out FirstAidKit firstAidKit))
         {
-            DisableKit?.Invoke(firstAidKit);
-            _health.Heal();
+            KitDisabled?.Invoke(firstAidKit);
+            _health.FullHeal();
         }
 
         if (collision.gameObject.TryGetComponent(out EnemyPatroller enemy))
