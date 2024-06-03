@@ -10,7 +10,7 @@ public class HealthSliderSmooth : MonoBehaviour
 
     private float _currentSmoothHealth;        
     private float _delay = 0.001f;        
-    private float _currentHealth;
+    private float _currentHealth;    
 
     private void Start()
     {
@@ -37,7 +37,6 @@ public class HealthSliderSmooth : MonoBehaviour
     private void ShowHealth(float currentHealth)
     {        
         WaitForSeconds wait = new WaitForSeconds(_delay);
-        StopAllCoroutines();
         StartCoroutine(SmoothHealthShowing(currentHealth, wait));          
     }
 

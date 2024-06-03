@@ -3,33 +3,29 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {  
-    [SerializeField] private float _maxHealth = 100f;
-    [SerializeField] private Vampirism _player;
+    [SerializeField] private float _maxHealth = 100f;    
 
-    public event UnityAction HealthChanged;
+    public event UnityAction HealthChanged;    
 
     public float CurrentHealth { get;  private set; } = 100f;
-
-    private void Start()
-    {
-        if(this.TryGetComponent<Vampirism>(out Vampirism player))
-            _player.HealthSucked += VampirismHeal;
-    }        
 
     public void FullHeal()
     {
         if (_maxHealth > 0)
         {
-            CurrentHealth = _maxHealth;
-            HealthChanged?.Invoke();
-        }        
+            CurrentHealth += _maxHealth;
+            HealthChanged?.Invoke();           
+        }
     }
 
-    public void VampirismHeal(EnemyPatroller enemy)
+    public void TakeHeal(float heal)
     {
-        CurrentHealth += _player.VampireDamage;
-        HealthChanged?.Invoke();        
-    }
+        if (heal > 0)
+        {
+            CurrentHealth += heal;
+            HealthChanged?.Invoke();            
+        }        
+    }   
 
     public void TakeDamage(int damage)
     {

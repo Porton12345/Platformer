@@ -6,7 +6,7 @@ public class Interactor : MonoBehaviour
 {  
     [SerializeField] private Health _health;       
    
-    private Coroutine _damageCoroutine;
+    private Coroutine _damageCoroutine;        
 
     public event Action<Coin> CoinDisabled;
     public event Action<FirstAidKit> KitDisabled;
@@ -37,8 +37,7 @@ public class Interactor : MonoBehaviour
 
             if (_damageCoroutine == null)
             {
-                WaitForSeconds wait = new WaitForSeconds(enemy.Delay);
-                StopAllCoroutines();
+                WaitForSeconds wait = new WaitForSeconds(enemy.Delay);                
                 _damageCoroutine = StartCoroutine(TakeDamage(enemy.Damage, wait));
             }
         }

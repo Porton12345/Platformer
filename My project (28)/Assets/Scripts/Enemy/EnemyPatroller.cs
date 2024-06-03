@@ -10,22 +10,18 @@ public class EnemyPatroller : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private AnimationClip _clipRunRight;
     [SerializeField] private AnimationClip _clipRunLeft;
-    [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private Vampirism _player;
+    [SerializeField] private LayerMask _playerLayer;    
 
     private float _minLenght = 0.2f;
     private float _raycastDistance = 5f;
-    private Coroutine _coroutine;
-    private Coroutine _vampireCoroutine;
+    private Coroutine _coroutine;   
     private int _nextPointIndex = 0;
 
     public int Damage => 10;
     public float Delay => 0.1f;
 
     private void Start()
-    {                
-        _player.HealthSucked += TakeVampireDamage;
-
+    {        
         _places = new Transform[_placesPoints.childCount];
 
         for (int i = 0; i < _places.Length; i++)
@@ -44,9 +40,22 @@ public class EnemyPatroller : MonoBehaviour
 
         if (_health.CurrentHealth <= 0)
         {
-            Destroy(gameObject);
-            _player.HealthSucked -= TakeVampireDamage;
+            Destroy(gameObject);            
         }         
+    }
+
+    public float GiveHealth(float damage)
+    {
+        float result = _health.CurrentHealth - damage;
+
+        if (result > 0)
+        {
+            return result;
+        }
+        else
+        {
+            return 0;
+        }            
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -55,13 +64,13 @@ public class EnemyPatroller : MonoBehaviour
         {
             if (_coroutine != null)
             {
-                StopAllCoroutines();
+                StopCoroutine(_coroutine);
                 _coroutine = null;
             }
             else
             {
                 WaitForSeconds wait = new WaitForSeconds(player.Delay);
-                _coroutine = StartCoroutine(TakeDamage(player.Damage, wait, this));
+                _coroutine = StartCoroutine(TakeDamage(player.Damage, wait));
             }
         }
     }
@@ -77,7 +86,7 @@ public class EnemyPatroller : MonoBehaviour
             }
         }
     }
-
+   
     private void Patrol()
     {
         Transform target = _places[_nextPointIndex];
@@ -96,27 +105,13 @@ public class EnemyPatroller : MonoBehaviour
         {            
             _animator.Play(_clipRunLeft.name);
         }        
-    }    
+    }        
 
-    private void TakeVampireDamage(EnemyPatroller enemy)
-    {        
-        if (_vampireCoroutine != null)
-        {
-            StopAllCoroutines();
-            _vampireCoroutine = null;
-        }
-        else
-        {
-            WaitForSeconds wait = new WaitForSeconds(_player.VampireDelay);
-            _vampireCoroutine = StartCoroutine(TakeDamage(_player.VampireDamage, wait, enemy));
-        }        
-    }
-
-    private IEnumerator TakeDamage(int damage, WaitForSeconds wait, EnemyPatroller enemy)
+    private IEnumerator TakeDamage(int damage, WaitForSeconds wait)
     {
         while (true)
-        {
-            enemy._health.TakeDamage(damage);            
+        {            
+            _health.TakeDamage(damage);
             yield return wait;
         }        
     }
