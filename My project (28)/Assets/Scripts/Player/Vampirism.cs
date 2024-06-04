@@ -40,14 +40,14 @@ public class Vampirism : MonoBehaviour
         
         foreach (Collider2D hit in hits)
         {
-            if(hit.transform.TryGetComponent(out EnemyPatroller enemy))
+            if(hit.transform.TryGetComponent(out EnemyHealthInteractor enemy))
             {
-                if(enemy.TryGetComponent(out Health health))
+                _health.TakeHeal(enemy.GiveHealthRemainder(VampireDamage));
+
+                if (enemy.TryGetComponent(out Health health))
                 {
                     health.TakeDamage(VampireDamage);
-                }
-
-                _health.TakeHeal(enemy.GiveHealth(VampireDamage));          
+                }                         
             }
         }
     }

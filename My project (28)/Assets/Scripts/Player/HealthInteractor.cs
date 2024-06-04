@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Interactor : MonoBehaviour
+public class HealthInteractor : MonoBehaviour
 {  
     [SerializeField] private Health _health;       
    
@@ -27,7 +27,7 @@ public class Interactor : MonoBehaviour
             _health.FullHeal();
         }
 
-        if (collision.gameObject.TryGetComponent(out EnemyPatroller enemy))
+        if (collision.gameObject.TryGetComponent(out EnemyHealthInteractor enemy))
         {
             if (_damageCoroutine != null)
             {
@@ -45,7 +45,7 @@ public class Interactor : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collisiion)
     {
-        if (collisiion.gameObject.TryGetComponent(out EnemyPatroller enemy))
+        if (collisiion.gameObject.TryGetComponent(out EnemyHealthInteractor enemy))
         {
             if (_damageCoroutine != null)
             {

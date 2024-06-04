@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class SpawnerPoint : MonoBehaviour
 {
     [SerializeField] protected Vector2 _position;    
-    [SerializeField] protected Interactor _player;
+    [SerializeField] protected HealthInteractor _player;
 
     protected float _delay = 2f;
 

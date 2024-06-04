@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class EnemyPatroller : MonoBehaviour
-{
-    [SerializeField] private Health _health;    
+{   
     [SerializeField] private Transform[] _places;
     [SerializeField] private Transform _placesPoints;
     [SerializeField] private float _speed;
@@ -14,11 +13,7 @@ public class EnemyPatroller : MonoBehaviour
 
     private float _minLenght = 0.2f;
     private float _raycastDistance = 5f;
-    private Coroutine _coroutine;   
     private int _nextPointIndex = 0;
-
-    public int Damage => 10;
-    public float Delay => 0.1f;
 
     private void Start()
     {        
@@ -36,57 +31,9 @@ public class EnemyPatroller : MonoBehaviour
         if (hitRight.collider == null && hitLeft.collider == null)
         {
             Patrol();
-        }        
-
-        if (_health.CurrentHealth <= 0)
-        {
-            Destroy(gameObject);            
-        }         
-    }
-
-    public float GiveHealth(float damage)
-    {
-        float result = _health.CurrentHealth - damage;
-
-        if (result > 0)
-        {
-            return result;
-        }
-        else
-        {
-            return 0;
         }            
-    }
+    }             
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.TryGetComponent(out Interactor player))
-        {
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-                _coroutine = null;
-            }
-            else
-            {
-                WaitForSeconds wait = new WaitForSeconds(player.Delay);
-                _coroutine = StartCoroutine(TakeDamage(player.Damage, wait));
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.TryGetComponent(out Interactor player))
-        {
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-                _coroutine = null;
-            }
-        }
-    }
-   
     private void Patrol()
     {
         Transform target = _places[_nextPointIndex];
@@ -105,14 +52,5 @@ public class EnemyPatroller : MonoBehaviour
         {            
             _animator.Play(_clipRunLeft.name);
         }        
-    }        
-
-    private IEnumerator TakeDamage(int damage, WaitForSeconds wait)
-    {
-        while (true)
-        {            
-            _health.TakeDamage(damage);
-            yield return wait;
-        }        
-    }
+    }           
 }
