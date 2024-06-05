@@ -19,12 +19,12 @@ public class Vampirism : MonoBehaviour
     private void Update()
     {       
         if (Input.GetKeyDown(KeyCode.Space))
-        {            
-            CooldownCounter();
+        {
+            UseVampirism();
         }            
     }        
 
-    private void CooldownCounter()
+    private void UseVampirism()
     {
         WaitForSeconds wait = new WaitForSeconds(_delay);        
 

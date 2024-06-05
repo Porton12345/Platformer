@@ -10,7 +10,17 @@ public class EnemyHealthInteractor : MonoBehaviour
     public int Damage => 10;
     public float Delay => 0.1f;
 
-    private void Update()
+    private void OnEnable()
+    {
+        _health.HealthChanged += CheckDeath;
+    }
+
+    private void OnDisable()
+    {
+        _health.HealthChanged -= CheckDeath;
+    }
+
+    private void CheckDeath()
     {        
         if (_health.CurrentHealth <= 0)
         {
