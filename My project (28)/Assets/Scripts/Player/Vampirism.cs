@@ -40,7 +40,7 @@ public class Vampirism : MonoBehaviour
         
         foreach (Collider2D hit in hits)
         {
-            if(hit.transform.TryGetComponent(out EnemyHealthInteractor enemy))
+            if(hit.transform.TryGetComponent(out Enemy enemy))
             {
                 _health.TakeHeal(enemy.GiveHealthRemainder(VampireDamage));
 

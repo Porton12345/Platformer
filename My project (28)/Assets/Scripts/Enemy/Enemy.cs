@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyHealthInteractor : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     [SerializeField] private Health _health;
    
@@ -30,7 +30,7 @@ public class EnemyHealthInteractor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out HealthInteractor player))
+        if (collision.gameObject.TryGetComponent(out Player player))
         {
             if (_coroutine != null)
             {
@@ -47,7 +47,7 @@ public class EnemyHealthInteractor : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out HealthInteractor player))
+        if (collision.gameObject.TryGetComponent(out Player player))
         {
             if (_coroutine != null)
             {
