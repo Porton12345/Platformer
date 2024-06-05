@@ -20,7 +20,7 @@ public class EnemyPatroller : MonoBehaviour
         _places = new Transform[_placesPoints.childCount];
 
         for (int i = 0; i < _places.Length; i++)
-            _places[i] = _placesPoints.GetChild(i).transform;
+            _places[i] = _placesPoints.GetChild(i);
     }    
 
     private void FixedUpdate()

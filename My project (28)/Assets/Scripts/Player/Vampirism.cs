@@ -42,7 +42,7 @@ public class Vampirism : MonoBehaviour
         {
             if(hit.transform.TryGetComponent(out Enemy enemy))
             {
-                _health.TakeHeal(enemy.GiveHealthRemainder(VampireDamage));
+                _health.TakeHeal(enemy.GiveHealthRemainder(VampireDamage));               
 
                 if (enemy.TryGetComponent(out Health health))
                 {

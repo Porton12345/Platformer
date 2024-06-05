@@ -18,15 +18,7 @@ public class Enemy : MonoBehaviour
     private void OnDisable()
     {
         _health.HealthChanged -= CheckDeath;
-    }
-
-    private void CheckDeath()
-    {        
-        if (_health.CurrentHealth <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
+    }       
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -56,6 +48,7 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
     public float GiveHealthRemainder(float damage)
     {
         float result = _health.CurrentHealth - damage;
@@ -69,6 +62,14 @@ public class Enemy : MonoBehaviour
             return _health.CurrentHealth;
         }
     }
+
+    private void CheckDeath()
+    {
+        if (_health.CurrentHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }        
 
     private IEnumerator TakeDamage(int damage, WaitForSeconds wait)
     {
